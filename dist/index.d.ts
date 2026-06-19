@@ -1,9 +1,9 @@
-export declare const extractContent: (document: Document, Node: Node) => {
+export declare const extractContent: (document: Document) => {
     title: string;
     content: string;
 };
 declare const module: {
-    extractContent: (document: Document, Node: Node) => {
+    extractContent: (document: Document) => {
         title: string;
         content: string;
     };

@@ -1,5 +1,9 @@
-export const extractContent = (document, Node) => {
+export const extractContent = (document) => {
     const title = document.title?.trim();
+    const Node = {
+        ELEMENT_NODE: 1,
+        TEXT_NODE: 3,
+    };
     const marginStart = (text = "", n = 0) => {
         let start = "";
         for (let i = 1; i <= n; i++) {

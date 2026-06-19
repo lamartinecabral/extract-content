@@ -1,5 +1,10 @@
-export const extractContent = (document: Document, Node: Node) => {
+export const extractContent = (document: Document) => {
   const title = document.title?.trim();
+
+  const Node: Partial<Node> = {
+    ELEMENT_NODE: 1,
+    TEXT_NODE: 3,
+  };
 
   const marginStart = (text = "", n = 0) => {
     let start = "";
