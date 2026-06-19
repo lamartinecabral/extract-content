@@ -22,7 +22,8 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc",
-    "version": "npm --no-git-tag-version version patch"
+    "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
+    "version:patch": "npm --no-git-tag-version version patch"
   },
   "devDependencies": {
     "typescript": "^6.0.3"
