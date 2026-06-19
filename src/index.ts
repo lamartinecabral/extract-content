@@ -1,5 +1,7 @@
-export const extractContent = (document: Document) => {
-  const title = document.title?.trim();
+export const extractContent = (doc?: Document) => {
+  if (!doc) doc = window.document;
+
+  const title = doc.title?.trim() ?? "";
 
   const Node: Partial<Node> = {
     ELEMENT_NODE: 1,
@@ -77,7 +79,7 @@ export const extractContent = (document: Document) => {
   };
 
   const mainCandidate = (selector = "") => {
-    const list = [...document.querySelectorAll(selector)].filter(
+    const list = [...doc.querySelectorAll(selector)].filter(
       // @ts-ignore: ignore
       (elem) => elem.innerText?.trim(),
     );
@@ -221,14 +223,14 @@ export const extractContent = (document: Document) => {
   let main = null;
   if (!main) main = mainCandidate("main");
   if (!main) main = mainCandidate("article");
-  if (!main) main = document.body;
+  if (!main) main = doc.body;
 
   let text = "";
 
   try {
     text = main ? extractText(main).trim() : "";
   } catch (_) {
-    text = document.body.innerText.trim();
+    text = doc.body.innerText.trim();
   }
 
   return { title, content: text };
