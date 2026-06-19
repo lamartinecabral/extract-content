@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "sourceMap": true,
     "declaration": true,
     "target": "esnext",
     "rootDir": "./src",

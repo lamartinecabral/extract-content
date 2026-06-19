@@ -204,4 +204,5 @@ export const extractContent = (document, Node) => {
     }
     return { title, content: text };
 };
-//# sourceMappingURL=index.js.map
+const module = { extractContent };
+export default module;

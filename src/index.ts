@@ -228,3 +228,7 @@ export const extractContent = (document: Document, Node: Node) => {
 
   return { title, content: text };
 };
+
+const module = { extractContent };
+
+export default module;

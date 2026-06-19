@@ -1,6 +1,6 @@
 {
   "name": "@lamartinecabral/extract-content",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A utility library to extract web page content optimized for RAG workflows",
   "author": "lamartinecabral",
   "license": "MIT",
@@ -15,8 +15,7 @@
   ],
   "files": [
     "./dist/index.js",
-    "./dist/index.d.ts",
-    "./dist/index.js.map"
+    "./dist/index.d.ts"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
