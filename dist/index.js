@@ -31,7 +31,7 @@ export const extractContent = (doc) => {
         return marginStart(marginEnd(text, 2), 2);
     };
     const clean = (text = "") => {
-        return text.trim().replace(/\n+/g, " ");
+        return text.trim().replace(/\s+/g, " ");
     };
     const fixList = (text = "") => {
         return text.replace(/\n([^\-])/g, " $1");
@@ -141,7 +141,10 @@ export const extractContent = (doc) => {
                     return text.trim() ? block(text) : "";
                 case "OL":
                     return text.trim()
-                        ? block(fixList(text).replaceAll("\n- ", "\n1. "))
+                        ? block(fixList(text).replaceAll("\n- ", (() => {
+                            let i = 0;
+                            return () => `\n${++i}. `;
+                        })()))
                         : "";
                 case "UL":
                     return text.trim() ? block(fixList(text)) : "";
