@@ -1,6 +1,6 @@
 {
   "name": "@lamartinecabral/extract-content",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A utility library to extract web page content optimized for RAG workflows",
   "author": "lamartinecabral",
   "license": "MIT",
@@ -24,8 +24,8 @@
     "test": "node --test",
     "build": "tsc",
     "start": "npm run build",
-    "tag": "npm test && v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
-    "version:patch": "npm --no-git-tag-version version patch"
+    "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
+    "version:patch": "npm test && npm run build && npm --no-git-tag-version version patch"
   },
   "devDependencies": {
     "happy-dom": "^20.10.6",

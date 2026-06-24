@@ -41,7 +41,7 @@ export const extractContent = (doc?: Document) => {
   };
 
   const trim2 = (text = "") => {
-    return text.replace(/(^\s+)|(\s+$)/g, " ");
+    return text.replace(/\s+/g, " ");
   };
 
   const mark = (text = "", marker = "") => {

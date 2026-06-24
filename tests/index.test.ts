@@ -40,7 +40,8 @@ describe("Test Suite", () => {
     document.write(`
       <body>
         <p>
-          This is a paragraph
+          This is
+          a paragraph
           <span>written across</span>
           multiple lines
         </p>
