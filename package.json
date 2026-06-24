@@ -4,6 +4,7 @@
   "description": "A utility library to extract web page content optimized for RAG workflows",
   "author": "lamartinecabral",
   "license": "MIT",
+  "type": "module",
   "keywords": [
     "content-extraction",
     "rag",
@@ -26,6 +27,8 @@
     "version:patch": "npm --no-git-tag-version version patch"
   },
   "devDependencies": {
+    "@types/node": "^26.0.0",
+    "happy-dom": "^20.10.6",
     "typescript": "^6.0.3"
   }
 }
