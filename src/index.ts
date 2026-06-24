@@ -203,7 +203,7 @@ export const extractContent = (doc?: Document) => {
           if (isHeaderRow) {
             return marginEnd(
               marginStart("| " + text.trim(), 2) +
-                `\n| ${" --- |".repeat(text.split(" | ").length)}`,
+                `\n|${" --- |".repeat(text.split(" | ").length)}`,
               1,
             );
           }

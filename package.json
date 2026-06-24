@@ -21,9 +21,10 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
+    "test": "node --test",
     "build": "tsc",
-    "start": "tsc",
-    "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
+    "start": "npm run build",
+    "tag": "npm test && v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
     "version:patch": "npm --no-git-tag-version version patch"
   },
   "devDependencies": {
