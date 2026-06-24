@@ -57,20 +57,20 @@ describe("Test Suite", () => {
       <body>
         <ul>
           <li>This is a list item</li>
-          <li>This is another list item</li>
+          <li>This is <b>another</b> list item</li>
         </ul>
         <ol>
           <li>This is an ordered list item</li>
-          <li>This is another ordered list item</li>
+          <li>This is <b>another</b> ordered list item</li>
         </ol>
       </body>
     `);
     const expectedContent = [
       "- This is a list item",
-      "- This is another list item",
+      "- This is **another** list item",
       "",
       "1. This is an ordered list item",
-      "2. This is another ordered list item",
+      "2. This is **another** ordered list item",
     ].join("\n");
     const { content } = extractContent(document);
     assert.equal(content.trim(), expectedContent);

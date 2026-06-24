@@ -36,12 +36,8 @@ export const extractContent = (doc?: Document) => {
     return marginStart(marginEnd(text, 2), 2);
   };
 
-  const clean = (text = "") => {
-    return text.trim().replace(/\s+/g, " ");
-  };
-
-  const trim2 = (text = "") => {
-    return text.replace(/\s+/g, " ");
+  const clean = (text = "", trim = true) => {
+    return (trim ? text.trim() : text).replace(/\s+/g, " ");
   };
 
   const mark = (text = "", marker = "") => {
@@ -140,10 +136,6 @@ export const extractContent = (doc?: Document) => {
           const marker = text.includes("```") ? "````" : "```";
           return block(marker + "\n" + text + "\n" + marker);
         }
-        case "LI": {
-          const innerText = assertElem(node, "li").innerText;
-          return innerText.trim() ? line("- " + clean(innerText)) : "";
-        }
       }
 
       let text = "";
@@ -151,7 +143,7 @@ export const extractContent = (doc?: Document) => {
       node.childNodes.forEach((child, index) => {
         let childText = "";
         if (child.nodeType === Node.TEXT_NODE) {
-          childText = trim2(child.textContent ?? "");
+          childText = clean(child.textContent ?? "", false);
           if (!index) childText = childText.trimStart();
           else if (index === len - 1) childText = childText.trimEnd();
         } else {
@@ -184,6 +176,9 @@ export const extractContent = (doc?: Document) => {
             : "";
         case "UL":
           return text.trim() ? block(text) : "";
+        case "LI": {
+          return text.trim() ? line("- " + clean(text)) : "";
+        }
         case "TABLE":
           return text.trim() ? block(text) : "";
         case "THEAD":
