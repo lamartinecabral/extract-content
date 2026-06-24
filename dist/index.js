@@ -178,7 +178,7 @@ export const extractContent = (doc) => {
                     const isHeaderRow = !!assertElem(node, "tr").querySelector("th");
                     if (isHeaderRow) {
                         return marginEnd(marginStart("| " + text.trim(), 2) +
-                            `\n| ${" --- |".repeat(text.split(" | ").length)}`, 1);
+                            `\n|${" --- |".repeat(text.split(" | ").length)}`, 1);
                     }
                     return line("| " + text.trim());
                 }
