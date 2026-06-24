@@ -40,8 +40,8 @@ export const extractContent = (doc?: Document) => {
     return text.trim().replace(/\s+/g, " ");
   };
 
-  const fixList = (text = "") => {
-    return text.replace(/\n([^\-])/g, " $1");
+  const trim2 = (text = "") => {
+    return text.replace(/(^\s+)|(\s+$)/g, " ");
   };
 
   const mark = (text = "", marker = "") => {
@@ -59,6 +59,15 @@ export const extractContent = (doc?: Document) => {
     if (text1.endsWith("\n") && text2.startsWith("\n")) {
       return text1 + text2.slice(1);
     }
+    if (text1.endsWith(" ") && text2.startsWith(" ")) {
+      return text1 + text2.slice(1);
+    }
+    if (text1.endsWith("\n") && text2.startsWith(" ")) {
+      return text1 + text2.slice(1);
+    }
+    if (text1.endsWith(" ") && text2.startsWith("\n")) {
+      return text1.slice(0, -1) + text2;
+    }
     return text1 + text2;
   };
 
@@ -70,8 +79,7 @@ export const extractContent = (doc?: Document) => {
       node.nodeType === Node.ELEMENT_NODE &&
       (!tag || node.nodeName === tag.toUpperCase())
     ) {
-      // @ts-ignore: ignore
-      return node;
+      return node as HTMLElementTagNameMap[T];
     }
     throw new Error(
       `Expected element of type ${tag}, but got ${node.nodeName}`,
@@ -79,9 +87,8 @@ export const extractContent = (doc?: Document) => {
   };
 
   const mainCandidate = (selector = "") => {
-    const list = [...doc.querySelectorAll(selector)].filter(
-      // @ts-ignore: ignore
-      (elem) => elem.innerText?.trim(),
+    const list = [...doc.querySelectorAll(selector)].filter((elem) =>
+      (elem as HTMLElement).innerText?.trim(),
     );
     if (list.length === 1) return list[0];
     return null;
@@ -116,8 +123,10 @@ export const extractContent = (doc?: Document) => {
           ).trim();
           return text ? `(${node.nodeName}: ${text}) ` : "";
         }
-        case "BUTTON":
-          return assertElem(node, "button").innerText;
+        case "BUTTON": {
+          const text = assertElem(node, "button").innerText.trim();
+          return text ? `(${node.nodeName}: ${text})` : "";
+        }
         case "SELECT": {
           const selectedOptions = [
             ...assertElem(node, "select").selectedOptions,
@@ -126,8 +135,11 @@ export const extractContent = (doc?: Document) => {
             ? selectedOptions.map((o) => o.innerText).join(",") + " "
             : "";
         }
-        case "PRE":
-          return block("```\n" + assertElem(node, "pre").innerText + "\n```");
+        case "PRE": {
+          const text = assertElem(node, "pre").innerText;
+          const marker = text.includes("```") ? "````" : "```";
+          return block(marker + "\n" + text + "\n" + marker);
+        }
         case "LI": {
           const innerText = assertElem(node, "li").innerText;
           return innerText.trim() ? line("- " + clean(innerText)) : "";
@@ -135,18 +147,18 @@ export const extractContent = (doc?: Document) => {
       }
 
       let text = "";
-      node.childNodes.forEach((child) => {
+      const len = node.childNodes.length;
+      node.childNodes.forEach((child, index) => {
         let childText = "";
         if (child.nodeType === Node.TEXT_NODE) {
-          childText = child.textContent ?? "";
-          if (!childText.trim() && childText) childText = " ";
+          childText = trim2(child.textContent ?? "");
+          if (!index) childText = childText.trimStart();
+          else if (index === len - 1) childText = childText.trimEnd();
         } else {
           childText = extractText(child);
         }
-        if ((!text || text.endsWith("\n")) && !childText.trim()) return;
         text = concat(text, childText);
       });
-      text = text.replace(/(^ +\n)|(\n +$)/g, "\n");
 
       switch (node.nodeName) {
         case "SPAN":
@@ -161,7 +173,7 @@ export const extractContent = (doc?: Document) => {
         case "OL":
           return text.trim()
             ? block(
-                fixList(text).replaceAll(
+                text.replaceAll(
                   "\n- ",
                   (() => {
                     let i = 0;
@@ -171,7 +183,7 @@ export const extractContent = (doc?: Document) => {
               )
             : "";
         case "UL":
-          return text.trim() ? block(fixList(text)) : "";
+          return text.trim() ? block(text) : "";
         case "TABLE":
           return text.trim() ? block(text) : "";
         case "THEAD":
