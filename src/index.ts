@@ -121,7 +121,7 @@ export const extractContent = (doc?: Document) => {
           const text = String(
             "alt" in node ? node.alt : "title" in node ? node.title : "",
           ).trim();
-          return text ? `(${node.nodeName}: ${text}) ` : "";
+          return text ? `(${node.nodeName}: ${text})` : "";
         }
         case "BUTTON": {
           const text = assertElem(node, "button").innerText.trim();

@@ -105,6 +105,77 @@ describe("Test Suite", () => {
     assert.equal(content.trim(), expectedContent);
   });
 
+  it("should ignore hidden and non-content elements", () => {
+    document.write(`
+      <head>
+        <title>Ignored body noise</title>
+      </head>
+      <body>
+        <p>Visible text.</p>
+        <p style="display: none;">Hidden text.</p>
+        <div hidden>Also hidden.</div>
+        <script>document.write("script output")</script>
+        <style>body { color: red; }</style>
+        <form>
+          <input value="secret" />
+        </form>
+      </body>
+    `);
+
+    const { title, content } = extractContent(document);
+    assert.equal(title, "Ignored body noise");
+    assert.equal(content.trim(), "Visible text.");
+  });
+
+  it("should preserve inline markdown formatting", () => {
+    document.write(`
+      <body>
+        <p>
+          A <em>gentle</em> <strong>warning</strong> with
+          <del>old</del> and <code>code()</code>.
+        </p>
+      </body>
+    `);
+
+    const { content } = extractContent(document);
+    assert.equal(
+      content.trim(),
+      "A _gentle_ **warning** with ~old~ and `code()`.",
+    );
+  });
+
+  it("should extract media labels and fenced code blocks", () => {
+    document.write(
+      `
+        <body>
+          <p><img alt="Preview image" /></p>
+          <p><button>Submit</button></p>
+          <select multiple>
+            <option selected>First</option>
+            <option>Second</option>
+            <option selected>Third</option>
+          </select>
+          <pre>const snippet = "${"```nested```"}";</pre>
+        </body>
+      `,
+    );
+
+    const expectedContent = [
+      "(IMG: Preview image)",
+      "",
+      "(BUTTON: Submit)",
+      "",
+      "First,Third",
+      "",
+      "````",
+      'const snippet = "```nested```";',
+      "````",
+    ].join("\n");
+
+    const { content } = extractContent(document);
+    assert.equal(content.trim(), expectedContent);
+  });
+
   describe("main content", () => {
     it("should extract content from main tag", () => {
       document.write(`
