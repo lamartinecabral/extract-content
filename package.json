@@ -24,6 +24,7 @@
     "test": "node --test",
     "build": "tsc",
     "start": "npm run build",
+    "prepack": "npm run build",
     "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
     "version:patch": "npm test && npm run build && npm --no-git-tag-version version patch"
   },
