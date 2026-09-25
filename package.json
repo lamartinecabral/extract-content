@@ -21,13 +21,14 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "node --test",
     "build": "tsc",
-    "lint": "npx -y biome check",
-    "lint:fix": "npx -y biome check --write",
-    "start": "npm run build",
+    "lint": "npx -y @biomejs/biome check",
+    "lint:fix": "npm run lint -- --write",
     "prepack": "npm run build",
+    "start": "npm run build",
     "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",
+    "test": "node --test",
+    "typecheck": "tsc --noEmit",
     "version:patch": "npm test && npm run build && npm --no-git-tag-version version patch"
   },
   "devDependencies": {
