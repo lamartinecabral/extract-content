@@ -23,6 +23,8 @@
   "scripts": {
     "test": "node --test",
     "build": "tsc",
+    "lint": "npx -y biome check",
+    "lint:fix": "npx -y biome check --write",
     "start": "npm run build",
     "prepack": "npm run build",
     "tag": "v=$(node -p \"'v'+require('./package.json').version\") && git tag $v && git push origin $v",

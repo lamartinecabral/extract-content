@@ -1,6 +1,6 @@
-import { Window } from "happy-dom";
 import assert from "node:assert";
 import { afterEach, beforeEach, describe, it } from "node:test";
+import { Window } from "happy-dom";
 import { extractContent } from "../src/index.ts";
 
 describe("Test Suite", () => {
@@ -9,7 +9,7 @@ describe("Test Suite", () => {
 
   beforeEach(() => {
     window = new Window();
-    // @ts-ignore for this task, happy-dom's Document is compatible with DOM's Document interface.
+    // @ts-expect-error for this task, happy-dom's Document is compatible with DOM's Document interface.
     document = window.document;
   });
 
